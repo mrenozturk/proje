@@ -1,0 +1,52 @@
+class Node:
+    def __init__(self, name):
+        self.name = name
+        self.children = []
+
+    def add_child(self, child):
+        self.children.append(child)
+
+    def display(self, depth=0):
+        print("  " * depth + f"{self.name}")
+        for child in self.children:
+            child.display(depth + 1)
+
+# Ağaç yapısını oluşturma
+root = Node("Haftalık Program")
+
+gunler = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"]
+calisma_saatleri = [
+    ("08.00-16.00", "16.00-00.00"),
+    ("08.00-16.00", "16.00-00.00"),
+    ("08.00-16.00", "16.00-00.00"),
+    ("08.00-16.00", "16.00-00.00"),
+    ("08.00-16.00", "16.00-00.00"),
+    ("08.00-16.00", "16.00-00.00"),
+    ("08.00-16.00", "16.00-00.00", "16.00-00.00"),
+]
+haftalik_program = [
+    ["İbrahim", "Selman", "Eren"],
+    ["Eren", "İbrahim", "Selman"],
+    ["Selman", "Eren", "İbrahim"],
+    ["İbrahim", "Selman", "Eren"],
+    ["Eren", "İbrahim", "Selman"],
+    ["Selman", "Eren", "İbrahim"],
+    ["İbrahim", "Selman", "Eren"],
+]
+
+# Her gün için düğümler oluştur ve root'a ekle
+for i, gun in enumerate(gunler):
+    gun_node = Node(gun)
+    root.add_child(gun_node)
+
+    for j, calisan in enumerate(haftalik_program[i]):
+        if i != 6 and j == 2:  # Pazar hariç izinli çalışanı belirt
+            izinli_node = Node(f"{calisan} (İzinli)")
+            gun_node.add_child(izinli_node)
+        else:
+            saat = calisma_saatleri[i][j]
+            calisan_node = Node(f"{calisan} çalışıyor, saat: {saat}")
+            gun_node.add_child(calisan_node)
+
+# Ağacı yazdır
+root.display()
